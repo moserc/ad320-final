@@ -7,18 +7,18 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
+let db = new sqlite3.Database('./tbd.db', (err) => {
+   if (err) {
+     console.error(err.message);
+   }
+   console.log('Connected to the local database.');
+ });
 
-require('./paths/item')(app);
-require('./paths/transaction')(app);
+require('./paths/item')(app, db);
+require('./paths/transaction')(app, db);
+require('./database')(db);
 
 var fs = require("fs");
-let db = new sqlite3.Database('./tbd.db', (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Connected to the local database.');
-  });
-
 
 
 app.get('/', function (req, res) {
