@@ -8,10 +8,10 @@ let db = null;
 
 module.exports = function(app, database) { 
     db = database;
-    app.get('/item', getItemsAPI);
-    app.get('/item/category/', getAllCategoryAPI);
-    app.get('/item/category/:category', getItemByCategoryAPI);
-    app.get('/item/id/:id', getItemByIdAPI);    
+    app.get('/api/item', getItemsAPI);
+    app.get('/api/item/category/', getAllCategoryAPI);
+    app.get('/api/item/category/:category', getItemByCategoryAPI);
+    app.get('/api/item/id/:id', getItemByIdAPI);    
 }
 
 //API functions

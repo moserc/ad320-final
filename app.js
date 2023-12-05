@@ -21,19 +21,19 @@ require('./database')(db);
 var fs = require("fs");
 
 
-app.get('/', function (req, res) {
+app.get('/api', function (req, res) {
    res.send("Backend is running.");
 });
 
-app.get('/user/list', function (req, res) {
+app.get('/api/user/list', function (req, res) {
    res.send("Users list");
 });
 
-app.post('/user/add', function (req, res) {
+app.post('/api/user/add', function (req, res) {
     res.send("Not implemented yet.")
  });
 
 var server = app.listen(8081, function () {
    var port = server.address().port;
-   console.log("Example app listening at http://localhost:%s", port)
+   console.log("Example app listening at http://localhost:%s/api", port)
 });
