@@ -3,6 +3,16 @@
     Date:
     AD320 Final Project
 */
+CREATE TABLE "items" (
+	"item_id"	INTEGER NOT NULL UNIQUE,
+	"category"	TEXT NOT NULL,
+	"name"	TEXT NOT NULL,
+	"price"	REAL,
+	"brand_name"	TEXT,
+	"photo_url"	TEXT,
+	"rating_review"	TEXT,
+	PRIMARY KEY("item_id" AUTOINCREMENT)
+);
 
 INSERT INTO items 
 (price,  brand_name, photo_url, rating_review)
