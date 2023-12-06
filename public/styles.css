@@ -10,13 +10,13 @@ html {
   
   body {
     background-color: whitesmoke;
-    font-family: "Dosis";
+    font-family: "Dosis", sans-serif;
     font-size: large;
     text-align: center;
     flex-flow: column;
   }
   
-  body, #banner, #content, hgroup{
+  body, #top, #content, hgroup{
     width: 100%;
   }
 

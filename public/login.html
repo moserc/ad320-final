@@ -3,20 +3,22 @@
     Date:
     AD320 Final Project
  -->
- 
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
-        <link href="https://fonts.google.com/specimen/Dosis" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap" rel="stylesheet">
         <title>Go Outside!</title>
     </head>
 
     <body>
-        <section id = "banner">
+        <section id = "top">
             <hgroup>
                 <h1>
                     Welcome to Go Outside Co.
@@ -28,23 +30,21 @@
 
         <section id="content">
             <section id = "result">
-                <form>
+                <form id="user_login">
                     <div>
                         <label for="username">username: </label>
-                        <input type="email" id="email" required />
+                        <input type="email" id="username" required />
                     </div><br>
                     <div>
                         <label for="password">password:  </label>
-                        <input type="password" id="password" required />
-                    </div><br>
-                    <button id="login">Log in</button>
-                    <div>
-                        <br>Not a member yet? <a href="register.html">Register here.</a>
+                        <input type="password" id="password" required /><br><br>
+                        <input type="submit" value="Submit"><br>
+                        <p>Not a member yet? <a href="register.html">Register here.</a></p>
                     </div>
                 </form>
             </section>
         </section>
 
-        <footer>Website by Team Teal | AD320 Fall 2023</footer>
+        <footer>Website by Team Teal  -  AD320 Fall 2023</footer>
     </body>
 </html>

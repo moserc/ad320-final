@@ -30,14 +30,17 @@
 
         <section id="content">
             <section id = "result">
-                <div>
-                    <h2>Transaction History:</h2>
-                    <ul>
-                        <li>(sample transaction) category, item name: checkout date - 
-                            <a href="review.html">leave a review</a>
-                        </li>
-                    </ul>
-                </div>
+                <form>
+                    <div>
+                        <label for="rate">Please rate your experience on a scale of 1-5:</label>
+                        <input type="number" id="rate" min="1" max="5" step="1">
+                    </div><br>
+                    <div>
+                        <label for="review">Leave a review (optional):  </label><br>
+                        <textarea type="text" id="review" cols="40" rows="5"></textarea><br>
+                        <input type="submit" value="Submit review">
+                    </div>
+                </form>
             </section>
         </section>
 

@@ -3,44 +3,46 @@
     Date:
     AD320 Final Project
  -->
- 
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
-        <link href="https://fonts.google.com/specimen/Dosis" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap" rel="stylesheet">
         <title>Go Outside!</title>
     </head>
 
     <body>
-        <section id = "banner">
+        <section id = "top">
             <hgroup>
                 <h1>
                     Welcome to Go Outside Co.
                     <br>Equipment Reservations
                 </h1>
-                <nav>reservations home || <a href=login.html>login</a></nav>
+                <nav>reservations home || <a href="login.html">login</a></nav>
             </hgroup>
             <br>
-            <span> grid view | list view</span>
+            <span id="toggle_view"> grid view | list view</span>
         </section>
 
         <section id="content">
             <section id="menu">
                 <section>
-                    Product Search: <br>
-                    <input id="search"><br><br>
-                    <label id="view_all">view all</label><br>
-                    <label id="categories">view by category</label><br>
+                    <label for="search">Product Search: </label><br>
+                    <input type="search" id="search"><br><br>
+                    <p id="view_all">view all</p>
+                    <p id="categories">view by category</p>
                     <ul></ul>
                 </section>
             </section>
             <section id = "result">(Choose an option from the left sidebar)</section>
         </section>
 
-        <footer>Website by Team Teal | AD320 Fall 2023</footer>
+        <footer>Website by Team Teal  -  AD320 Fall 2023</footer>
     </body>
 </html>
