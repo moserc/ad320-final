@@ -33,6 +33,9 @@ app.post('/api/user/add', function (req, res) {
     res.send("Not implemented yet.")
  });
 
+ app.use(express.static('public'))
+ app.use(express.static('SqLImages'))
+
 var server = app.listen(8081, function () {
    var port = server.address().port;
    console.log("Example app listening at http://localhost:%s/api", port)
