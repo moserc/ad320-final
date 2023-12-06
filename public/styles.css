@@ -3,3 +3,61 @@
     Date:
     AD320 Final Project
 */
+
+html {
+    min-width: 600px;
+  }
+  
+  body {
+    background-color: whitesmoke;
+    font-family: "Dosis", sans-serif;
+    font-size: large;
+    text-align: center;
+    flex-flow: column;
+  }
+  
+  body, #top, #content, hgroup{
+    width: 100%;
+  }
+
+  hgroup {
+    color: whitesmoke;
+    background-color:rgba(63, 84, 97, 0.763);
+    padding: 1%;
+    margin-top: 5%;
+  }
+
+  hgroup h1{
+    font-size: 42px;
+  }
+  
+  #content, #result {
+    display: flex;
+  }
+
+  #content{
+    align-items: flex-start;
+  }
+
+  #menu{
+    text-align: left;
+    margin: 1%;
+  }
+
+  #result{
+    border: solid;
+    border-width: 1px;
+    border-color:slategrey;
+    justify-content: space-evenly;
+    align-content: space-evenly;
+    flex-wrap: wrap;
+    margin-top: 1%;
+    margin-left: 2%;
+    margin-right: 3%;
+    width:inherit;
+    min-height: 300px;
+  }
+  
+  footer {
+    font-size: medium;
+  }
