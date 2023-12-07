@@ -26,9 +26,7 @@
     id('view_all').addEventListener('click', getAll);
 
     //view all categories - GET
-    id('categories').addEventListener('click', function() {
-        alert('event on click working');
-    });
+    id('categories').addEventListener('click', getCategories);
 
     //toggle view
     id('toggle_view').addEventListener('click', function() {
@@ -59,28 +57,84 @@
     });
   }
 
-  function getAll(){
+  /** ------------------------------ View Item Functions  ------------------------------ */
+
+  function getAll(data){
     console.log('fetching all items...');
     fetch(URL+"item")
       .then(statusCheck)
       .then(res => res.json())
-      .then(separate)
-      .then(processAllItems) //not defined yet
+      .then(processAllItems)
       .catch(err);
     console.log('done');
   }
 
-  /** ------------------------------ Helper Functions  ------------------------------ */
   function processAllItems(data){
-    console.log('Data received: '+ data[0]);
+    console.log('Data received: ' + data);
     clear();
-    for (let i=0; i < data.length; i++){
-        let image = gen('img');
-        image.src = data["photo_url"];
-        image.alt = 'gear image';
-        id("result").appendChild(image);
-    }
+    data.forEach(item => {
+      
+      let container = gen('figure');
+
+      let link = gen('a');
+      link.href = 'detail.html'; //TODO change this to item detail
+
+      let image = gen('img');
+      image.src = item.photo_url;
+      image.alt = item.photo_url;
+      image.width = 200;
+
+      let caption = gen('figcaption');
+      caption.textContent = item.category + ": " + item.name;
+
+      link.appendChild(image);
+      container.appendChild(link);
+      container.appendChild(caption);
+      id("result").appendChild(container);
+    })
   }
+
+  function itemDetail()
+
+  /** ------------------------------ Category Functions  ------------------------------ */
+
+  function getCategories(){
+    console.log('fetching all categories...');
+    fetch(URL+"/item/categories")
+      .then(statusCheck)
+      .then(res => res.json())
+      .then(processCategory)
+      .catch(err);
+    console.log('done');
+  }
+
+  /* function processCategory(data){
+    console.log('Data received: ' + data);
+    clear();
+    data.forEach(item => {
+      
+      let container = gen('figure');
+
+      let link = gen('a');
+      link.href = 'index.html'; //TODO change this to item detail
+
+      let image = gen('img');
+      image.src = item.photo_url;
+      image.alt = item.photo_url;
+      image.width = 200;
+
+      let caption = gen('figcaption');
+      caption.textContent = item.category + ": " + item.name;
+
+      link.appendChild(image);
+      container.appendChild(link);
+      container.appendChild(caption);
+      id("result").appendChild(container);
+    }) 
+  }*/
+
+  /** ------------------------------ Helper Functions  ------------------------------ */
+  
 
   function separate(data){
     console.log('Data received: '+ data);
@@ -103,7 +157,7 @@
    * Generic error message if something has not worked
    */
   function err(){
-    //not defined yet
+    id('result').innerHTML = "Error: something went wrong...";
   }
 
   function clear(){
