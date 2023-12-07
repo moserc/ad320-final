@@ -24,23 +24,24 @@
                     Welcome to Go Outside Co.
                     <br>Equipment Reservations
                 </h1>
-                <nav>reservations home || <a href="login.html">login</a></nav>
+                <nav><a href="index.html">reservations home</a> || login</nav>
             </hgroup>
-            <br>
-            <span id="toggle_view"> grid view | list view</span>
         </section>
 
         <section id="content">
-            <section id="menu">
-                <section>
-                    <label for="search">Product Search: </label><br>
-                    <input type="search" id="search"><br><br>
-                    <p id="view_all">view all</p>
-                    <p id="categories">view by category</p>
-                    <ul></ul>
-                </section>
+            <section id = "result">
+                <form>
+                    <div>
+                        <label for="rate">Please rate your experience on a scale of 1-5:</label>
+                        <input type="number" id="rate" min="1" max="5" step="1">
+                    </div><br>
+                    <div>
+                        <label for="review">Leave a review (optional):  </label><br>
+                        <textarea type="text" id="review" cols="40" rows="5"></textarea><br>
+                        <input type="submit" value="Submit review">
+                    </div>
+                </form>
             </section>
-            <section id = "result">(Choose an option from the left sidebar)</section>
         </section>
 
         <footer>Website by Team Teal  -  AD320 Fall 2023</footer>
