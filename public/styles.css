@@ -8,7 +8,7 @@ html {
   min-width: 600px;
 }
 
-a {
+a, hgroup {
   color: whitesmoke;
 }
 
@@ -29,7 +29,6 @@ body, #top, #content, hgroup{
 }
 
 hgroup {
-  color: whitesmoke;
   background-color:rgba(63, 84, 97, 0.763);
   padding: 1%;
   margin-top: 5%;
