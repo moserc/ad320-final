@@ -30,14 +30,14 @@
 
         <section id="content">
             <section id = "result">
-                <form id="create_user">
+                <form id="create_user" action="/api/user/register" method="post">
                     <div>
                         <label for="username">Enter a username: </label>
-                        <input type="email" id="username" required />
+                        <input type="email" name="email" required />
                     </div><br>
                     <div>
                         <label for="password">Enter a password:  </label>
-                        <input type="password" id="password" required /><br><br>
+                        <input type="password" name="password" required /><br><br>
                         <input type="submit" value="submit"><br><br>
                         <span></span>
                     </div>

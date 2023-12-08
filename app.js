@@ -6,6 +6,9 @@
 
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser')
+
 const app = express();
 let db = new sqlite3.Database('./tbd.db', (err) => {
    if (err) {
@@ -14,27 +17,29 @@ let db = new sqlite3.Database('./tbd.db', (err) => {
    console.log('Connected to the local database.');
  });
 
-require('./paths/item')(app, db);
-require('./paths/transaction')(app, db);
-require('./database')(db);
+
 
 var fs = require("fs");
-
 
 app.get('/api', function (req, res) {
    res.send("Backend is running.");
 });
 
-app.get('/api/user/list', function (req, res) {
-   res.send("Users list");
-});
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
-app.post('/api/user/add', function (req, res) {
-    res.send("Not implemented yet.")
- });
+// parse application/json
+app.use(bodyParser.json())
 
- app.use(express.static('public'))
- app.use(express.static('SqLImages'))
+app.use(express.static('public'));
+app.use(express.static('SqLImages'));
+app.use(cookieParser());
+app.use(express.urlencoded());
+
+require('./paths/item')(app, db);
+require('./paths/transaction')(app, db);
+require('./paths/user')(app, db);
+require('./database')(db);
 
 var server = app.listen(8081, function () {
    var port = server.address().port;
