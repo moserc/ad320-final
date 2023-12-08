@@ -38,7 +38,7 @@ var sessionHelper = require('../session');
     });
   }
 
-  function postRegisterAPI(request, response) {
+  function postLogoutAPI(request, response) {
     response.clearCookie(cookieName);
     return response.redirect('/');
   }
