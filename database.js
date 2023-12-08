@@ -5,7 +5,8 @@
 */
 
 module.exports = function(db) { 
-    createItemsTable(db);    
+    createItemsTable(db);   
+    createUsersTable(db); 
 }
 
 function createItemsTable(db)
@@ -23,8 +24,8 @@ function createItemsTable(db)
             console.log("Items table already exists.");
         } else {
             console.log("Items table created");
-            insertItems(db);
-        }     
+        }
+        insertItems(db);     
     });
 }
 
@@ -69,6 +70,41 @@ function insertItems(db)
             db.run(insert, [25, "Water sports", "kayak - single", 1299.00, "EddyLine", "EddyLine.PNG", "4.5"]);
             db.run(insert, [26, "Water sports", "kayak - tandem", 599.95, "TAHE", "TAHE.PNG", "4.0"]);
             console.log("Inserted items data.");
+        }
+    });     
+}
+
+function createUsersTable(db)
+{
+    db.run('CREATE TABLE users( \
+        email TEXT PRIMARY KEY NOT NULL,\
+        password TEXT NOT NULL\
+    )', (err) => {
+        if (err) {
+            console.log("Users table already exists.");
+        } else {
+            console.log("Users table created");
+        }     
+        insertUsers(db);
+    });
+}
+
+function insertUsers(db)
+{
+    db.all('SELECT * FROM users', [], (err, rows) => {
+        if (err) {
+            console.log("Unable to check data from users table.")
+            console.log(err);
+            return;
+        }
+        if (rows.length > 0)
+        {
+            console.log("User data present.");
+        }
+        else{
+            let insert = 'INSERT INTO users (email, password) VALUES (?,?)';
+            db.run(insert, ["test@test.local", "$2b$10$mHyxY0311BFe71j/jb3pN.nCgZwgBSpk0JCLGrwP2KHnhbwaeUDV2"]);
+            console.log("Inserted user data.");
         }
     });     
 }
