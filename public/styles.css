@@ -8,6 +8,10 @@ html {
   min-width: 600px;
 }
 
+a {
+  color: whitesmoke;
+}
+
 body {
   background-color: whitesmoke;
   font-family: "Dosis", sans-serif;
