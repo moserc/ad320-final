@@ -9,10 +9,10 @@ const NodeCache = require( "node-cache" );
 let secondsToCache = 60 * 15;
 const sessions = new NodeCache( { stdTTL: secondsToCache, checkperiod: 30 } );
 
-exports.createSession = function(username) {
+exports.createSession = function(customerId) {
     var sessionId = crypto.randomUUID();
     console.log('Session created ', 
-        sessions.set(sessionId, username, secondsToCache));
+        sessions.set(sessionId, customerId, secondsToCache));
     return sessionId;
 }
 
