@@ -24,7 +24,7 @@
                     Welcome to Go Outside Co.
                     <br>Equipment Reservations
                 </h1>
-                <nav><a href="index.html">reservations home</a> || login</nav>
+                <nav><a href="index.html">reservations home</a> || <a href="login.html" id="log">log in</a></nav>
             </hgroup>
         </section>
 
@@ -33,6 +33,10 @@
                 <form id="create_user" action="/api/user/register" method="post">
                     <div>
                         <label for="username">Enter a username: </label>
+                        <input type="text" name="username" required />
+                    </div><br>
+                    <div>
+                        <label for="email">Email address:</label>
                         <input type="email" name="email" required />
                     </div><br>
                     <div>

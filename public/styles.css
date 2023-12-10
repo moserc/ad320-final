@@ -66,6 +66,10 @@ hgroup h1{
   min-height: 300px;
 }
 
+#result a {
+  color:blue;
+}
+
 .list{
   flex-direction: column;
 }
