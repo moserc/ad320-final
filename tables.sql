@@ -164,9 +164,9 @@ VALUES
 
 
 SELECT * 
-FROM items;
+FROM items
 
 UNION
 
 SELECT AVG(rating_review)
-FROM feedback;
+FROM feedback
