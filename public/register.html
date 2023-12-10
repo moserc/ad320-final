@@ -32,16 +32,12 @@
             <section id = "result">
                 <form id="create_user" action="/api/user/register" method="post">
                     <div>
-                        <label for="username">Enter a username: </label>
-                        <input type="text" name="username" required />
-                    </div><br>
-                    <div>
                         <label for="email">Email address:</label>
-                        <input type="email" name="email" required />
+                        <input type="email" name="email" id="email" placeholder="email address" required />
                     </div><br>
                     <div>
                         <label for="password">Enter a password:  </label>
-                        <input type="password" name="password" required /><br><br>
+                        <input type="password" name="password" id="password" placeholder="password" required /><br><br>
                         <input type="submit" value="submit"><br><br>
                         <span></span>
                     </div>

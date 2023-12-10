@@ -23,10 +23,6 @@
     }); */ //search bar
     id('view_all').addEventListener('click', getAll);//view all items
     id('categories').addEventListener('click', getCategories);//view all categories
-/*  id('user_review').addEventListener('submit', function(event) {
-      event.preventDefault();
-      userReview();
-    }); */ //user review
     setLoginLogoutLink();
   }
 
@@ -70,9 +66,20 @@
       .catch(err);
     console.log('done');
   }
-  /** ------------------------------- POST requests  ------------------------------- */
-  //function userReview(){}
 
+  /**
+   * Retrieves transactions.
+   */
+  function getTransactions(){
+    console.log("fetching user's transactions...");
+    fetch("http://localhost:8081/transaction/user")
+      .then(statusCheck)
+      .then(res => res.json())
+      .then(showTransactions)
+      .catch(err);
+    console.log('done');
+  }
+  /** ------------------------------- POST requests  ------------------------------- */
   /**
    * Deletes the user's session cookie, logs out of session.
    */
@@ -87,6 +94,7 @@
           console.log('log out successful');
           document.cookie = 'session';
           setLoginLogoutLink();
+          id('transactions').innerHTML = '';
         }else{
           console.log('log out failed');
         }
@@ -108,7 +116,7 @@
       gridView = true;
     }
   }
-  /** ------------------------------ View Item Functions  ------------------------------ */
+  /** ------------------------------ View Functions  ------------------------------ */
   //search bar
   /* 
   function searchBar(term){
@@ -235,6 +243,31 @@
     form.appendChild(body);
     return form;
   } 
+
+  /**
+   * Shows all past transactions a user has made.
+   * @param {*} data list of json objects representing 
+   *  past transactions by user.
+   */
+  function showTransactions(data){
+    console.log('Listing transactions...');
+    clear();
+    let unorderedList = gen('ul');
+    if (data!=''){
+      data.forEach(rental => {
+        let listItem = gen('li');
+        listItem.textContent = 
+          rental.item+
+          '\n'+rental.confirmation_number+
+          '\n'+rental.checkout+
+          '\n'+rental.checkin;
+        unorderedList.appendChild(listItem);
+        })
+        id("result").appendChild(unorderedList);
+    }else{
+      id("result").innerHTML = 'No transactions yet'
+    }
+  }
   /** ------------------------------ Category Functions  ------------------------------ */
   /**
    * Used in conjunction with getCategories and getCatItems to 
@@ -292,6 +325,9 @@
         loginLogoutLink.textContent = 'log out';
         loginLogoutLink.href = 'javascript:void(0)';
         loginLogoutLink.addEventListener('click', logoutUser);
+        let purchases = id('transactions');
+        purchases.innerHTML = 'view past transactions';
+        purchases.addEventListener('click', getTransactions);
       }else{
         loginLogoutLink.textContent = 'log in';
         loginLogoutLink.href = 'login.html';
