@@ -46,12 +46,12 @@ VALUES
 CREATE TABLE "customers" (
 	"customer_id"	INTEGER NOT NULL UNIQUE,
 	"email"	TEXT,
-	"username"	TEXT,
+	"password"	TEXT,
 	PRIMARY KEY("customer_id" AUTOINCREMENT)
 );
 
 INSERT INTO customers
-(email, username)
+(email, password)
 VALUES
 ("jtorkbob@sbcglobal.net", "jtorkbob"),
 ("pgolle@verizon.net", "pgolle"),
