@@ -1,6 +1,6 @@
 <!-- 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date:
+    Date: 12/10/2023
     AD320 Final Project
  -->
 
@@ -9,6 +9,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +25,7 @@
                     Welcome to Go Outside Co.
                     <br>Equipment Reservations
                 </h1>
-                <nav><a href="index.html">reservations home</a> || login</nav>
+                <nav><a href="index.html">reservations home</a> || <a href="#" id="user_status">log in</a></nav>
             </hgroup>
         </section>
 
@@ -32,12 +33,12 @@
             <section id = "result">
                 <form id="user_login" action="/api/user/login" method="post">
                     <div>
-                        <label for="username">username: </label>
-                        <input type="email" name="email" required />
+                        <label for="email">email: </label>
+                        <input type="email" name="email" id="email" placeholder="email" required />
                     </div><br>
                     <div>
                         <label for="password">password:  </label>
-                        <input type="password" name="password" required /><br><br>
+                        <input type="password" name="password" id="password" placeholder="password" required /><br><br>
                         <input type="submit" value="Submit"><br>
                         <p>Not a member yet? <a href="register.html">Register here.</a></p>
                     </div>

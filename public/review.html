@@ -1,6 +1,6 @@
 <!-- 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date:
+    Date: 12/10/2023
     AD320 Final Project
  -->
 
@@ -9,6 +9,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
         <link rel="stylesheet" href="styles.css">
         <script src="index.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,20 +25,20 @@
                     Welcome to Go Outside Co.
                     <br>Equipment Reservations
                 </h1>
-                <nav><a href="index.html">reservations home</a> || login</nav>
+                <nav><a href="index.html">reservations home</a> || <a href="#" id="user_status">log out</a></nav>
             </hgroup>
         </section>
 
         <section id="content">
             <section id = "result">
-                <form>
+                <form id="review" action="/api/user/review" method="post">
                     <div>
                         <label for="rate">Please rate your experience on a scale of 1-5:</label>
-                        <input type="number" id="rate" min="1" max="5" step="1">
+                        <input type="number" name="rate" id="rate" min="1" max="5" step="1">
                     </div><br>
                     <div>
-                        <label for="review">Leave a review (optional):  </label><br>
-                        <textarea type="text" id="review" cols="40" rows="5"></textarea><br>
+                        <label for="review_text">Leave a review (optional):  </label><br>
+                        <textarea type="text" name = "review_text" id="review_text" cols="40" rows="5"></textarea><br>
                         <input type="submit" value="Submit review">
                     </div>
                 </form>

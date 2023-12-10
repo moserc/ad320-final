@@ -1,6 +1,6 @@
 /* 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date:
+    Date: 12/10/2023
     AD320 Final Project
 */
 
@@ -64,6 +64,10 @@ hgroup h1{
   margin-right: 3%;
   width:inherit;
   min-height: 300px;
+}
+
+#result a {
+  color:blue;
 }
 
 .list{
