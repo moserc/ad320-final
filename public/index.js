@@ -1,6 +1,6 @@
 /* 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date:
+    Date: 12/10/2023
     AD320 Final Project
 */
 "use strict";
@@ -16,9 +16,9 @@
     id('search').addEventListener('keydown', function(event){
         const key = event.key;
         if (key === 'Enter'){
-          const term = event.target.value.toLowerCase();
-          event.target.value = '';
-          searchBar(term);
+          const term = event.target.value.toLowerCase(); //capture value
+          event.target.value = ''; //clear input field
+          searchBar(term); //search value
         }
     }); //search bar
     id('view_all').addEventListener('click', getAll);//view all items
@@ -90,13 +90,16 @@
       credentials: 'same-origin'
     })
       .then(res => {
+        clear();
         if (res.ok){
           console.log('log out successful');
-          document.cookie = 'session';
+          document.cookie = 'session'; //the name of the cookie
           setLoginLogoutLink();
           id('transactions').innerHTML = '';
+          id('result').innerHTML = 'log out successful'
         }else{
           console.log('log out failed');
+          id('result').innerHTML = 'log out failed'
         }
       })
       .catch(err);
@@ -118,7 +121,8 @@
   }
   /** ------------------------------ View Functions  ------------------------------ */
   /**
-   * Filters items by search term.
+   * Filters items by search term. Returns all items
+   * if search term not found.
    * @param {*} term specific term to search for.
    */
   function searchBar(term){
@@ -127,7 +131,7 @@
     if(filter !== ''){
       id('result').appendChild(filter);
     }else{
-      console.log('search term not found');
+      console.log('search term not found, showing all items');
       getAll();
     }
   }
@@ -135,14 +139,19 @@
   /**
    * Used in conjunction with the getAll function. Populates the 
    * viewing window with each item's image, along with a caption 
-   * containing its category and type.
+   * containing its category and type. Sets up the functionality
+   * for detailed item view.
    * @param {*} data the list of json objects obtained from getAll.
    */
   function processAllItems(data){
     console.log('Data received: ', data);
     clear();
     data.forEach(item => {
-      
+      /*
+      for each item, generate a figure container to hold
+      its image and caption. Image is linked to its 
+      detailed view. Display in the 'result' viewing box.
+      */
       let container = gen('figure');
 
       let link = gen('a');
@@ -161,7 +170,7 @@
       container.appendChild(caption);
       id("result").appendChild(container);
 
-      link.addEventListener('click', function() {
+      link.addEventListener('click', function() { //set up detailed view
         getDetail(item);
       });
     })
@@ -177,6 +186,10 @@
     clear();
     let result = id('result');
 
+    /*
+    Attaches an image, item details, and either a button for logging in, 
+    or if logged in, a form for reserving the item.
+    */
     let image = gen('img');
     image.src = item.photo_url;
     image.alt = item.photo_url;
@@ -202,11 +215,11 @@
 
     if (isLoggedIn()){
       details.appendChild(form);
-      form.addEventListener('submit', function(event){
+      form.addEventListener('submit', function(event){ //function for the reservation form
         let dateIn = id('in').value;
         let dateOut = id('out').value;
         
-        const confirmation = confirm('Please confirm reservation for:\n\n'
+        const confirmation = confirm('Please confirm reservation for:\n\n' //confirms submit
           +'Item: '+item.brand_name
           +' '+item.name
           +' '+item.category
@@ -230,7 +243,7 @@
    * User must be logged in to access.
    * @returns a form element.
    */
-  function reserveItem(){
+  function reserveItem(){ //HTML for the form generated in getDetail
     let form = gen('form');
     form.id = 'reservation_form';
     form.action = "/api/user/reserve";
@@ -239,7 +252,7 @@
     let body = gen('div');
     body.innerHTML = 
       '<label for="checkout">Desired check out: </label>'+
-      '<input type="date" name="checkout" id="out" required /><br><br>'+
+      '<input type="date" name="checkout" id="out" min=" required /><br><br>'+
       '<label for="checkin">Desired check in: </label>'+
       '<input type="date" name="checkin" id="in" required /><br><br>'+
       '<input type="submit" value="submit">'
@@ -256,6 +269,11 @@
   function showTransactions(data){
     console.log('Listing transactions...');
     clear();
+    /*
+    transactions show as list items in an unordered list.
+    includes item, confirmation number, dates, and an
+    option to leave a review.
+    */
     let unorderedList = gen('ul');
     if (data!=''){
       data.forEach(rental => {
@@ -287,13 +305,14 @@
   function processCats(data){
     console.log('Data received: ', data);
     clear();
+    /*
+    creates a list item for each category name returned in the json data,
+    sets up functionality for filtering items by category.
+    */
     data.forEach(category_name => {
-      
       let cat = gen('li');
       cat.textContent = category_name;
-
       id("category").appendChild(cat);
-
       cat.addEventListener('click', function() {
         getCatItems(category_name);
       });
@@ -306,9 +325,13 @@
    * @returns true if the cookie's sessionId exists and is not empty.
    */
   function isLoggedIn(){
-    console.log('checking if user is logged in...')
+    console.log('checking if user is logged in...');
     const cookies = document.cookie.split(';');
-   
+    /*
+    for each array element in cookies, separate 'name=value' to 
+    analyze each item. check that a value exists and that it
+    is not empty.
+    */
     for(const cookie of cookies){
       const[name, value] = cookie.trim().split('=');
       if (value && value.length !== 0){
@@ -326,7 +349,13 @@
    */
   function setLoginLogoutLink(){
     const loginLogoutLink = id('user_status');
-    
+    /*
+    if logged in, switch 'log in' to 'log out' in the nav bar
+    set up functionality for logout
+    add option to see past transactions, set up functionality
+    if not logged in, reverse status option in nav bar
+    remove logout functionality
+    */
     try{
       const loggedIn = isLoggedIn();
       if (loggedIn){
@@ -342,7 +371,8 @@
         loginLogoutLink.removeEventListener('click', logoutUser);
       }
     }catch (error){
-      console.error('error setting login/logout link', error);
+      clear();
+      id('result').innerHTML = 'error setting login/logout link: '+error;
     }
   }
   /** ------------------------------ Helper Functions  ------------------------------ */
@@ -362,6 +392,7 @@
    * Generic error message if something has not worked
    */
   function err(){
+    clear();
     id('result').innerHTML = "Error: something went wrong...";
   }
 
