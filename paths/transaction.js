@@ -4,49 +4,37 @@
     AD320 Final Project
 */
 
-const transactions = [
-    {
-        id: 1,
-        customer: 1,
-        item: 1,
-        checkin: new Date("2023-12-10"),
-        checkout: new Date("2023-12-08"),
-    },
-    {
-        id: 2,
-        customer: 1,
-        item: 2,
-        checkin: new Date("2023-12-10"),
-        checkout: new Date("2023-12-08"),
-    },
-    {
-        id: 3,
-        customer: 2,
-        item: 1,
-        checkin: new Date("2023-12-04"),
-        checkout: new Date("2023-12-02"),
-    }
-]
+var sessionHelper = require('../session');
+let db = null;
 
-module.exports = function(app) { 
-    app.get('/transaction/user/', getTransactionByUserAPI)
-    app.get('/transaction/item/:item', getTransactionByItemAPI);    
+module.exports = function(app, database) { 
+    db = database;
+    app.get('/api/transaction/user/', getTransactionByCustomerAPI)
+    app.get('/api/transaction/item/:item', getTransactionByItemAPI);    
 }
 
 //API functions
-function getTransactionByUserAPI(request, response) {
-    let user = 1;
+function getTransactionByCustomerAPI(request, response) {
+    let cookie = req.headers.cookie;
+    let session = cookie.split('; ');
+    let customerId = sessionHelper.getSession(session);
     
-    let results = transactions
-        .filter(transaction => transaction.user == user);
-
-    response.json(results);
+    db.all("SELECT * FROM transactions WHERE customer_id = ?", [customerId], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return response.status(500).send('An error occurred while fetching data from the database');
+          }
+          return response.json(rows);
+    })
 }
 
 function getTransactionByItemAPI(request, response) {
-    let item = request.params.item;
-    let results = transactions
-        .filter(transaction => transaction.item == item);
-
-    response.json(results);
+    let itemId = request.params.item;
+    db.all("SELECT * FROM transactions WHERE item_id = ?", [itemId], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return response.status(500).send('An error occurred while fetching data from the database');
+          }
+          return response.json(rows);
+    })
 }
