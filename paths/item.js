@@ -12,6 +12,7 @@ module.exports = function(app, database) {
     app.get('/api/item/category/', getAllCategoryAPI);
     app.get('/api/item/category/:category', getItemByCategoryAPI);
     app.get('/api/item/id/:id', getItemByIdAPI);    
+    app.get('/api/item/search/:query', getItemBySearch);
 }
 
 //API functions
@@ -60,3 +61,15 @@ function getAllCategoryAPI(request, response) {
     })
 }
 
+function getItemBySearch(request, response) {
+    let query = request.params.query;
+    query = '%' + query +'%';
+
+    db.all("SELECT * FROM items WHERE brand_name like ? OR category like ? OR name like ?", [query, query, query], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return response.status(500).send('An error occurred while fetching data from the database');
+          }
+          return response.json(rows);
+    });
+}
