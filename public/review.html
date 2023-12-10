@@ -30,14 +30,14 @@
 
         <section id="content">
             <section id = "result">
-                <form>
+                <form id="review" action="/api/user/review" method="post">
                     <div>
                         <label for="rate">Please rate your experience on a scale of 1-5:</label>
-                        <input type="number" id="rate" min="1" max="5" step="1">
+                        <input type="number" name="rate" id="rate" min="1" max="5" step="1">
                     </div><br>
                     <div>
-                        <label for="review">Leave a review (optional):  </label><br>
-                        <textarea type="text" id="review" cols="40" rows="5"></textarea><br>
+                        <label for="review_text">Leave a review (optional):  </label><br>
+                        <textarea type="text" name = "review_text" id="review_text" cols="40" rows="5"></textarea><br>
                         <input type="submit" value="Submit review">
                     </div>
                 </form>
