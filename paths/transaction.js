@@ -9,7 +9,7 @@ let db = null;
 
 module.exports = function(app, database) { 
     db = database;
-    app.get('/api/transaction/user/', getTransactionByCustomerAPI)
+    app.get('/api/transaction/user/', getTransactionByCustomerAPI);
     app.get('/api/transaction/item/:item', getTransactionByItemAPI);    
 }
 
