@@ -284,7 +284,7 @@
    * based on the user's login status.
    */
   function setLoginLogoutLink(){
-    const loginLogoutLink = id('log');
+    const loginLogoutLink = id('user_status');
     
     try{
       const loggedIn = isLoggedIn();
