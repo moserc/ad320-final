@@ -13,14 +13,14 @@
   function init() {//event listeners
   
     id('toggle').addEventListener('click', toggle);//toggle view
-    /* id('search').addEventListener('keydown', function(event){
+    id('search').addEventListener('keydown', function(event){
         const key = event.key;
         if (key === 'Enter'){
           const term = event.target.value.toLowerCase();
-          console.log('searching for '+ term);
+          event.target.value = '';
           searchBar(term);
         }
-    }); */ //search bar
+    }); //search bar
     id('view_all').addEventListener('click', getAll);//view all items
     id('categories').addEventListener('click', getCategories);//view all categories
     setLoginLogoutLink();
@@ -117,16 +117,20 @@
     }
   }
   /** ------------------------------ View Functions  ------------------------------ */
-  //search bar
-  /* 
+  /**
+   * Filters items by search term.
+   * @param {*} term specific term to search for.
+   */
   function searchBar(term){
     console.log('filtering ' + term);
-    const filter = getAll().filter(item => { //can't use getAll
-      return item.brand_name.includes(search)
-    });
-    id('result').appendChild(filter);
+    const filter = '';//in-progress
+    if(filter !== ''){
+      id('result').appendChild(filter);
+    }else{
+      console.log('search term not found');
+      getAll();
+    }
   }
- */
 
   /**
    * Used in conjunction with the getAll function. Populates the 
@@ -256,11 +260,15 @@
     if (data!=''){
       data.forEach(rental => {
         let listItem = gen('li');
+        let feedback = gen('a');
+        feedback.href = 'review.html';
+        feedback.innerHTML = 'Leave a review';
         listItem.textContent = 
           rental.item+
           '\n'+rental.confirmation_number+
           '\n'+rental.checkout+
-          '\n'+rental.checkin;
+          '\n'+rental.checkin+'\n'
+        listItem.appendChild(feedback);
         unorderedList.appendChild(listItem);
         })
         id("result").appendChild(unorderedList);
