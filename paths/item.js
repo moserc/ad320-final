@@ -17,7 +17,8 @@ module.exports = function(app, database) {
 
 //API functions
 function getItemsAPI(request, response) {    
-    db.all("SELECT * FROM items", (err, rows) => {
+    db.all("SELECT items.item_id, items.category, items.name, items.price, items.brand_name, items.photo_url, AVG(feedback.rating_review) as rating_review " +
+    "FROM items LEFT JOIN feedback ON items.item_id = feedback.item_id GROUP BY feedback.item_id ORDER BY items.item_id ASC", (err, rows) => {
         if (err) {
             console.error(err);
             return response.status(500).send('An error occurred while fetching data from the database');
@@ -29,7 +30,8 @@ function getItemsAPI(request, response) {
 function getItemByIdAPI(request, response) {
     let id = request.params.id;
     
-    db.all("SELECT * FROM items WHERE item_id = ?", [id], (err, rows) => {
+    db.all("SELECT items.item_id, items.category, items.name, items.price, items.brand_name, items.photo_url, AVG(feedback.rating_review) as rating_review " +
+    "FROM items LEFT JOIN feedback ON items.item_id = feedback.item_id WHERE items.item_id = ? GROUP BY feedback.item_id", [id], (err, rows) => {
         if (err) {
             console.error(err);
             return response.status(500).send('An error occurred while fetching data from the database');
@@ -41,7 +43,8 @@ function getItemByIdAPI(request, response) {
 function getItemByCategoryAPI(request, response) {
     let category = request.params.category;    
 
-    db.all("SELECT * FROM items WHERE category = ?", [category], (err, rows) => {
+    db.all("SELECT items.item_id, items.category, items.name, items.price, items.brand_name, items.photo_url, AVG(feedback.rating_review) as rating_review " +
+    "FROM items LEFT JOIN feedback ON items.item_id = feedback.item_id WHERE items.category = ? GROUP BY feedback.item_id ORDER BY items.item_id ASC", [category], (err, rows) => {
         if (err) {
             console.error(err);
             return response.status(500).send('An error occurred while fetching data from the database');
@@ -65,7 +68,9 @@ function getItemBySearch(request, response) {
     let query = request.params.query;
     query = '%' + query +'%';
 
-    db.all("SELECT * FROM items WHERE brand_name like ? OR category like ? OR name like ?", [query, query, query], (err, rows) => {
+    db.all("SELECT items.item_id, items.category, items.name, items.price, items.brand_name, items.photo_url, AVG(feedback.rating_review) as rating_review " +
+    "FROM items LEFT JOIN feedback ON items.item_id = feedback.item_id WHERE items.brand_name like ? OR items.category like ? OR items.name like ? " +
+    "GROUP BY feedback.item_id ORDER BY items.item_id ASC", [query, query, query], (err, rows) => {
         if (err) {
             console.error(err);
             return response.status(500).send('An error occurred while fetching data from the database');

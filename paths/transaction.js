@@ -4,49 +4,65 @@
     AD320 Final Project
 */
 
-const transactions = [
-    {
-        id: 1,
-        customer: 1,
-        item: 1,
-        checkin: new Date("2023-12-10"),
-        checkout: new Date("2023-12-08"),
-    },
-    {
-        id: 2,
-        customer: 1,
-        item: 2,
-        checkin: new Date("2023-12-10"),
-        checkout: new Date("2023-12-08"),
-    },
-    {
-        id: 3,
-        customer: 2,
-        item: 1,
-        checkin: new Date("2023-12-04"),
-        checkout: new Date("2023-12-02"),
-    }
-]
+var sessionHelper = require('../session');
+let db = null;
 
-module.exports = function(app) { 
-    app.get('/transaction/user/', getTransactionByUserAPI)
-    app.get('/transaction/item/:item', getTransactionByItemAPI);    
+module.exports = function(app, database) { 
+    db = database;
+    app.get('/api/transaction/user/', getTransactionByCustomerAPI);
+    app.get('/api/transaction/item/:item', getTransactionByItemAPI);
+    app.post('/api/transaction/reserve', postReserveAPI);  
 }
 
 //API functions
-function getTransactionByUserAPI(request, response) {
-    let user = 1;
+function getTransactionByCustomerAPI(request, response) {
+    let sessionId = request.cookies['session'];    
+    let customerId = sessionHelper.getSession(sessionId);
     
-    let results = transactions
-        .filter(transaction => transaction.user == user);
-
-    response.json(results);
+    db.all("SELECT transactions.transaction_id, transactions.customer_id, items.name as name, transactions.checkout, transactions.checkin " + 
+        "FROM transactions LEFT JOIN items ON transactions.item_id = items.item_id WHERE transactions.customer_id = ? " +
+        "ORDER BY transactions.checkin DESC", [customerId], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return response.status(500).send('An error occurred while fetching data from the database');
+          }
+          return response.json(rows);
+    })
 }
 
 function getTransactionByItemAPI(request, response) {
-    let item = request.params.item;
-    let results = transactions
-        .filter(transaction => transaction.item == item);
-
-    response.json(results);
+    let itemId = request.params.item;
+    db.all("SELECT * FROM transactions WHERE item_id = ?", [itemId], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return response.status(500).send('An error occurred while fetching data from the database');
+          }
+          return response.json(rows);
+    })
 }
+
+async function postReserveAPI(request, response) {   
+    let sessionId = request.cookies['session'];    
+    let customerId = sessionHelper.getSession(sessionId);
+    let itemId = request.body.itemId; 
+    let checkout = request.body.checkout;
+    let checkin = request.body.checkin;
+    await createReservation(customerId, itemId, checkout, checkin);
+    return response.redirect('/');
+  }
+
+  async function createReservation(customerId, itemId, checkout, checkin){
+    return new Promise(async (resolve, reject) => {
+      let insert = 'INSERT INTO transactions (customer_id, item_id, checkout, checkin) VALUES (?,?,?,?)';
+      db.run(insert, [customerId, itemId, checkout, checkin], (err) => {
+          if (err) {
+              console.error(err);
+              return resolve(null);
+          }
+          else 
+          {
+            return resolve(null);
+          }
+      });    
+    });
+  }

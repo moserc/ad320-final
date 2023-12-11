@@ -24,6 +24,7 @@
     id('view_all').addEventListener('click', getAll);//view all items
     id('categories').addEventListener('click', getCategories);//view all categories
     setLoginLogoutLink();
+    getAll();
   }
 
   /** ------------------------------- GET requests  -------------------------------- */
@@ -72,7 +73,7 @@
    */
   function getTransactions(){
     console.log("fetching user's transactions...");
-    fetch("http://localhost:8081/transaction/user")
+    fetch("http://localhost:8081/api/transaction/user")
       .then(statusCheck)
       .then(res => res.json())
       .then(showTransactions)
@@ -199,7 +200,7 @@
     link.href = 'login.html';
     link.innerHTML = 'Log in to reserve';
 
-    let form = reserveItem();
+    let form = reserveItem(item.item_id);
     
     let details = gen('p');
     details.innerHTML = 
@@ -243,10 +244,10 @@
    * User must be logged in to access.
    * @returns a form element.
    */
-  function reserveItem(){ //HTML for the form generated in getDetail
+  function reserveItem(itemId){ //HTML for the form generated in getDetail
     let form = gen('form');
     form.id = 'reservation_form';
-    form.action = "/api/user/reserve";
+    form.action = "/api/transaction/reserve";
     form.method = "post";
 
     let body = gen('div');
@@ -255,6 +256,7 @@
       '<input type="date" name="checkout" id="out" min=" required /><br><br>'+
       '<label for="checkin">Desired check in: </label>'+
       '<input type="date" name="checkin" id="in" required /><br><br>'+
+      '<input type="hidden" name="itemId" value=' + itemId + ' />' +
       '<input type="submit" value="submit">'
 
     form.appendChild(body);
@@ -276,14 +278,15 @@
     */
     let unorderedList = gen('ul');
     if (data!=''){
+      
       data.forEach(rental => {
         let listItem = gen('li');
         let feedback = gen('a');
         feedback.href = 'review.html';
         feedback.innerHTML = 'Leave a review';
         listItem.textContent = 
-          rental.item+
-          '\n'+rental.confirmation_number+
+          rental.name+
+          '\n'+rental.transaction_id+
           '\n'+rental.checkout+
           '\n'+rental.checkin+'\n'
         listItem.appendChild(feedback);
