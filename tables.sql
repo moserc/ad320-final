@@ -163,10 +163,7 @@ VALUES
 (13, 18, "I like the product. I have nothing to add.", 4);
 
 
-SELECT * 
+SELECT *,  AVG(feedback.rating_review)
 FROM items
-
-UNION
-
-SELECT AVG(rating_review)
-FROM feedback
+LEFT OUTER JOIN feedback ON items.item_id = feedback.item_id
+GROUP BY items.item_id;
