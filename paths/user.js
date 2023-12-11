@@ -14,8 +14,20 @@ var sessionHelper = require('../session');
       app.post('/api/user/login/', postLoginAPI);
       app.post('/api/user/logout', postLogoutAPI);
       app.post('/api/user/register', postRegisterAPI);
+      app.post('/api/user/review', postItemReview);
   }
 
+  /**
+   * @api {post} /api/user/login/ Login
+   * @apiName postLoginAPI
+   * @apiGroup User
+   *
+   * @apiBody {String} email Users email.
+   * @apiBody {String} password Users password.
+   *
+   * @apiSuccess {Redirect} Redirects to home page.
+   * @apiSuccess {Cookie} session Sets the session cookie with the session guid.
+   */
   async function postLoginAPI(request, response) {    
     let email = request.body.email;
     let password = request.body.password;
@@ -102,3 +114,31 @@ var sessionHelper = require('../session');
       });    
     });
   }
+
+  
+
+async function postItemReview(request, response) {   
+  let sessionId = request.cookies['session'];    
+  let customerId = sessionHelper.getSession(sessionId);
+  let itemId = request.body.itemId; 
+  let rating = request.body.rating;
+  let review_text = request.body.review_text;
+  await createRating(customerId, itemId, rating, review_text);
+  return response.redirect('/');
+}
+
+async function createRating(customerId, itemId, rating, review_text){
+  return new Promise(async (resolve, reject) => {
+    let insert = 'INSERT INTO feedback (customer_id, item_id, rating_review, comments) VALUES (?,?,?,?)';
+    db.run(insert, [customerId, itemId, rating, review_text], (err) => {
+        if (err) {
+            console.error(err);
+            return resolve(null);
+        }
+        else 
+        {
+          return resolve(null);
+        }
+    });    
+  });
+}
