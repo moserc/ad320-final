@@ -1,6 +1,6 @@
 /* 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date: 12/09/2023
+    Date: 12/10/2023
     AD320 Final Project
 */
 CREATE TABLE "items" (
