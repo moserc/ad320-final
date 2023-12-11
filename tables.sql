@@ -1,6 +1,6 @@
 /* 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date:
+    Date: 12/10/2023
     AD320 Final Project
 */
 CREATE TABLE "items" (
@@ -10,49 +10,48 @@ CREATE TABLE "items" (
 	"price"	REAL,
 	"brand_name"	TEXT,
 	"photo_url"	TEXT,
-	"rating_review"	TEXT,
 	PRIMARY KEY("item_id" AUTOINCREMENT)
 );
 
 INSERT INTO items 
-(category, name, price, brand_name, photo_url, rating_review)
+(category, name, price, brand_name, photo_url)
 VALUES
-("Snowshoes","mountain terrain",179.95, "Atlas", "Atlas.PNG", "5.0"),
-("Snowshoes","rolling terrain",136.73, "Komperdell", "Komperdell.PNG", "1.0"),
-("Snowshoes","flat terrain",69.95, "Tubbs", "Tubs.PNG", "4.0"),
-("Skis","cross country",70.93, "Fischer", "Fischer.PNG", "5.0"),
-("Skis","downhill",449.95, "Rossignol", "Rossignol.PNG", "5.0"),
-("Snow tube","snow tube",159.00, "Sonic", "Sonic.PNG", "4.5"),
-("Bikes","mountain",279.29, "Co-op_Cycles", "Co-op_Cycles.PNG", "4.5"),
-("Bikes","road",999.00, "Salsa", "SalsaA.PNG", "4.2"),
-("Bikes","gravel",999.00, "Salsa", "SalsaB.PNG", "4.0"),
-("Bikes","recumbent",2995.00, "Schwinn", "Schwinn.PNG", "4.5"),
-("Bikes","tandem",2499.99, "Salsa", "SalsaC.PNG", "4.5"),
-("Camping","tent - 1 person",337.39, "Big Agnes", "BigAgnes.PNG", "4.1"),
-("Camping","tent - 2 person",185.00, "TheNorthFace", "TheNorthFace.PNG", "4.5"),
-("Camping","tent - 3 person",179.73, "Klymit", "Klymit.PNG", "5.0"),
-("Camping","tent - 4 person",188.89, "Eureka", "Eureka.PNG", "4.0"),
-("Camping","tent - 6 person",117.73, "Alpine Mountain Gear", "AlpineMountainGear.PNG", "4.0"),
-("Camping","bear canister - S",76.95, "BearVault", "BearVaultA.PNG", "4.2"),
-("Camping","bear canister - M",83.95, "BearVault", "BearVaultB.PNG", "4.0"),
-("Camping","bear canister - L",89.95, "BearVault", "BearVaultC.PNG", "4.5"),
-("Camping","bear canister - XL",94.95, "BearVault", "BearVaultD.PNG", "4.0"),
-("Camping","daypack",65.00, "Osprey", "Osprey.PNG", "4.6"),
-("Camping","overnight pack",83.39, "Co-op Traverse", "Co-opTraverse.PNG", "4.5"),
-("Camping","backpacking pack",239.95, "Granite Gear", "GraniteGear.PNG", "4.5"),
-("Water sports","canoe",999.95, "Old Town", "OldTown.PNG", "4.0"),
-("Water sports","kayak - single",1299.00, "EddyLine", "EddyLine.PNG", "4.5"),
-("Water sports","kayak - tandem",599.95, "TAHE", "TAHE.PNG", "4.0");
+("Snowshoes","mountain terrain",17.00, "Atlas", "atlas.png"),
+("Snowshoes","rolling terrain",13.00, "komperdell", "komperdell.png"),
+("Snowshoes","flat terrain",6.00, "Tubbs", "tubs.png"),
+("Skis","cross country",7.00, "Fischer", "fischer.png"),
+("Skis","downhill",44.00, "Rossignol", "rossignol.png"),
+("Snow tube","snow tube",15.00, "Sonic", "sonic.png"),
+("Bikes","mountain",27.00, "Co-op_Cycles", "co-op_cycles.png"),
+("Bikes","road",99.00, "Salsa", "salsaa.png"),
+("Bikes","gravel",99.00, "Salsa", "salsab.png"),
+("Bikes","recumbent",299.00, "PERFORMER", "performer.png"),
+("Bikes","tandem",249.00, "Salsa", "salsac.png"),
+("Camping","tent - 1 person",33.00, "Big Agnes", "bigagnes.png"),
+("Camping","tent - 2 person",18.00, "TheNorthFace", "thenorthface.png"),
+("Camping","tent - 3 person",17.00, "Klymit", "klymit.png"),
+("Camping","tent - 4 person",18.00, "Eureka", "eureka.png"),
+("Camping","tent - 6 person",11.00, "Alpine Mountain Gear", "alpinemountaingear.png"),
+("Camping","bear canister - S",7.00, "BearVault", "bearvaulta.png"),
+("Camping","bear canister - M",8.00, "BearVault", "bearvaultb.png"),
+("Camping","bear canister - L",8.00, "BearVault", "bearvaultc.png"),
+("Camping","bear canister - XL",9.00, "BearVault", "bearvaultd.png"),
+("Camping","daypack",6.00, "Osprey", "osprey.png"),
+("Camping","overnight pack",8.00, "Co-op Traverse", "co-optraverse.png"),
+("Camping","backpacking pack",23.00, "Granite Gear", "granitegear.png"),
+("Water sports","canoe",99.00, "Old Town", "oldtown.png"),
+("Water sports","kayak - single",129.00, "EddyLine", "eddyline.png"),
+("Water sports","kayak - tandem",59.00, "TAHE", "tahe.png");
 
 CREATE TABLE "customers" (
 	"customer_id"	INTEGER NOT NULL UNIQUE,
 	"email"	TEXT,
-	"username"	TEXT,
+	"password"	TEXT,
 	PRIMARY KEY("customer_id" AUTOINCREMENT)
 );
 
 INSERT INTO customers
-(email, username)
+(email, password)
 VALUES
 ("jtorkbob@sbcglobal.net", "jtorkbob"),
 ("pgolle@verizon.net", "pgolle"),
@@ -95,69 +94,76 @@ CREATE TABLE "transactions" (
 INSERT INTO transactions
 (customer_id, item_id, checkout, checkin)
 VALUES 
-(546, 41, "2021-02-07", "2022-02-20"),
-(546, 33, "2021-02-07", "2022-01-25"),
-(548, 47,  "2021-03-10", "2023-04-02"),
-(561, 51, "2021-01-25", "2023-07-06"),
-(550, 52,  "2021-02-05", "2022-04-02"),
-(555, 35, "2021-01-10", "2023-06-10"),
-(552, 31, "2021-05-05", "2023-07-02"),
-(563, 39, "2021-01-05","2023-08-11"),
-(570, 36, "2021-02-05", "2023-05-19"),
-(570, 37, "2021-02-05", "2023-10-08"),
-(569, 32, "2021-02-05", "2023-04-02"),
-(564, 49, "2021-02-01", "2023-05-01"),
-(560, 34, "2021-01-11", "2023-03-09"),
-(558, 38, "2021-02-21", "2022-04-23"),
-(565, 40, "2021-01-05", "2022-04-04"),
-(566, 42, "2021-02-09", "2023-04-06"),
-(567, 43, "2021-02-03", "2023-04-01"),
-(568, 32, "2021-02-03", "2022-04-01"),
-(551, 46, "2021-02-05", "2022-04-02"),
-(553, 27, "2021-02-05", "2022-04-02"),
-(554, 48, "2022-01-02", "2023-02-05"),
-(556, 28, "2021-02-01", "2022-04-03"),
-(549, 50, "2022-09-02", "2023-08-05"),
-(557, 29, "2022-01-02", "2023-02-05"),
-(559, 45, "2022-01-09", "2023-02-05"),
-(558, 44, "2022-01-08", "2023-02-05");
+(1, 15, "2021-02-07", "2022-02-20"),
+(1, 7, "2021-02-07", "2022-01-25"),
+(3, 21,  "2021-03-10", "2023-04-02"),
+(16, 25, "2021-01-25", "2023-07-06"),
+(5, 26,  "2021-02-05", "2022-04-02"),
+(10, 9, "2021-01-10", "2023-06-10"),
+(7, 5, "2021-05-05", "2023-07-02"),
+(18, 13, "2021-01-05","2023-08-11"),
+(25, 10, "2021-02-05", "2023-05-19"),
+(25, 11, "2021-02-05", "2023-10-08"),
+(24, 6, "2021-02-05", "2023-04-02"),
+(19, 23, "2021-02-01", "2023-05-01"),
+(15, 8, "2021-01-11", "2023-03-09"),
+(13, 12, "2021-02-21", "2022-04-23"),
+(20, 14, "2021-01-05", "2022-04-04"),
+(21, 16, "2021-02-09", "2023-04-06"),
+(22, 17, "2021-02-03", "2023-04-01"),
+(23, 6, "2021-02-03", "2022-04-01"),
+(6, 20, "2021-02-05", "2022-04-02"),
+(8, 1, "2021-02-05", "2022-04-02"),
+(9, 22, "2022-01-02", "2023-02-05"),
+(11, 2, "2021-02-01", "2022-04-03"),
+(4, 24, "2022-09-02", "2023-08-05"),
+(12, 3, "2022-01-02", "2023-02-05"),
+(14, 19, "2022-01-09", "2023-02-05"),
+(13, 18, "2022-01-08", "2023-02-05");
 
 CREATE TABLE "feedback" (
 	"feedback_id"	INTEGER NOT NULL UNIQUE,
 	"customer_id"	INTEGER NOT NULL,
 	"item_id"	INTEGER NOT NULL,
 	"comments"	TEXT,
+	"rating_review"	INTEGER,
 	PRIMARY KEY("feedback_id" AUTOINCREMENT),
 	FOREIGN KEY("customer_id") REFERENCES "customers"("customer_id"),
 	FOREIGN KEY("item_id") REFERENCES "items"("item_id")
 );
 
 INSERT INTO feedback
-(customer_id, item_id, comments)
+(customer_id, item_id, comments, rating_review)
 VALUES
-(546, 41, "Snowshoes fit me well."),
-(546, 33, "I like the product. I have nothing to add."),
-(548, 47,  "I like the product. I have nothing to add."),
-(561, 51, "I like the product. I have nothing to add."),
-(550, 52,  "I like the product. I have nothing to add."),
-(555, 35, "I like the product. I have nothing to add."),
-(552, 31, "I like the product. I have nothing to add."),
-(563, 39, "I like the product. I have nothing to add."),
-(570, 36, "I like the product. I have nothing to add."),
-(570, 37, "I like the product. I have nothing to add."),
-(569, 32, "I like the product. I have nothing to add."),
-(564, 49, "I like the product. I have nothing to add."),
-(560, 34, "Road bike is great!"),
-(558, 38, "The  tent is easy to set up!"),
-(565, 40,"The  tent is easy to set up!"),
-(566, 42, "The  tent is easy to set up!"),
-(567, 43, "The bear canister is too small"),
-(568, 32, "I like the product. I have nothing to add."),
-(551, 46, "I like the product . I have nothing to add."),
-(553, 27, "I like the product. I have nothing to add."),
-(554, 48, "I like the product. I have nothing to add."),
-(556, 28, "Snowshoes are too loose for me "),
-(549, 50, "I like the product. I have nothing to add"),
-(557, 29, "I like the product. I have nothing to add."),
-(559, 45,"I like the product. I have nothing to add."),
-(558, 44, "I like the product. I have nothing to add.");
+(1, 15, "Snowshoes fit me well.", 5), 
+(1, 7, "Bike gears are not working properly", 1),
+(3, 21,  "I like the product. I have nothing to add.", 4),
+(16, 25, "I like the product. I have nothing to add.", 5 ),
+(5, 26,  "I like the product. I have nothing to add.", 5),
+(10, 9, "I like the product. I have nothing to add.", 5),
+(7, 5, "I like the product. I have nothing to add.", 5),
+(18, 13, "I like the product. I have nothing to add.", 4),
+(25, 10, "I like the product. I have nothing to add.", 4),
+(25, 11, "I like the product. I have nothing to add.", 4),
+(24, 6, "I like the product. I have nothing to add.", 5),
+(19, 23, "I like the product. I have nothing to add.", 5),
+(15, 8, "Road bike is great!", 4),
+(13, 12, "The  tent is easy to set up!", 5),
+(20, 14,"The  tent is easy to set up!", 5),
+(21, 16, "The  tent is easy to set up!", 4),
+(22, 17, "The bear canister is too small", 2),
+(23, 6, "I like the product. I have nothing to add.", 5),
+(6, 20, "I like the product . I have nothing to add.", 4),
+(8, 1, "I like the product. I have nothing to add.", 4),
+(9, 22, "I like the product. I have nothing to add.", 4),
+(11, 2, "Snowshoes are too loose for me ", 2),
+(4, 24,"I like the product. I have nothing to add", 5),
+(12, 3, "I like the product. I have nothing to add.", 4),
+(14, 19,"I like the product. I have nothing to add.", 5),
+(13, 18, "I like the product. I have nothing to add.", 4);
+
+
+SELECT *,  AVG(feedback.rating_review)
+FROM items
+LEFT OUTER JOIN feedback ON items.item_id = feedback.item_id
+GROUP BY items.item_id;
