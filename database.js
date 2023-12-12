@@ -55,7 +55,7 @@ async function insertItems()
         db.serialize(function(){
             statement.run([1, "Snowshoes", "mountain terrain", 17.00, "Atlas", "atlas.png"]);
             statement.run([2, "Snowshoes", "rolling terrain", 13.00, "komperdell", "komperdell.png"]);
-            statement.run([3, "Snowshoes", "flat terrain", 6.00, "Tubbs", "tubs.png"]);
+            statement.run([3, "Snowshoes", "flat terrain", 6.00, "Tubbs", "tubbs.png"]);
             statement.run([4, "Skis", "cross country", 7.00, "Fischer", "fischer.png"]);
             statement.run([5, "Skis", "downhill", 44.00, "Rossignol", "rossignol.png"]);
             statement.run([6, "Snow tube", "snow tube",15.00, "Sonic", "sonic.png"]);

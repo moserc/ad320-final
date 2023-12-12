@@ -47,8 +47,14 @@ async function postReserveAPI(request, response) {
     let itemId = request.body.itemId; 
     let checkout = request.body.checkout;
     let checkin = request.body.checkin;
-    await createReservation(customerId, itemId, checkout, checkin);
-    return response.redirect('/');
+    let reservationCreated = await createReservation(customerId, itemId, checkout, checkin);
+    if (reservationCreated) {
+      let transactionId = await getTransactionIdByInsertion(customerId, itemId, checkout, checkin);
+      if (transactionId != null) {
+        return response.status(200).send(transactionId);
+      } 
+    }
+    return response.status(400).send("Unable to reserve. Please try again.");
   }
 
   async function createReservation(customerId, itemId, checkout, checkin){
@@ -57,12 +63,26 @@ async function postReserveAPI(request, response) {
       db.run(insert, [customerId, itemId, checkout, checkin], (err) => {
           if (err) {
               console.error(err);
-              return resolve(null);
+              return resolve(false);
           }
           else 
           {
-            return resolve(null);
+            return resolve(true);
           }
       });    
+    });
+  }
+
+  function getTransactionIdByInsertion(customerId, itemId, checkout, checkin) {
+    return new Promise(async (resolve, reject) => {
+      db.all("SELECT transaction_id FROM transactions WHERE customer_id =? AND item_id =? AND checkout= ? AND checkin = ? " +
+      "ORDER BY transaction_id DESC LIMIT 1", [customerId, itemId, checkout, checkin], (err, rows) => {
+          if (err) {
+              console.error(err);
+              return resolve(null);
+            }
+            console.log('rows: ', rows);
+            return resolve(rows[0]);
+      })
     });
   }
