@@ -326,7 +326,7 @@
         listItem.appendChild(feedback);
         unorderedList.appendChild(listItem);
         feedback.addEventListener('click', function(){
-          userReview(rental.item_id);
+          userReview(rental.transaction_id);
         });
       });
         
@@ -341,7 +341,7 @@
    * past transactions.
    * @param {*} itemId ID associated with the item that is being reviewed.
    */
-  function userReview(itemId){
+  function userReview(transactionId){
     let form = gen('form');
     form.id = 'review';
     form.action = "/api/user/review";
@@ -351,7 +351,7 @@
       '<input type="number" name="rating" id="rating" min="1" max="5" step="1"><br><br>'+
       '<label for="review_text">Leave a review (optional):  </label><br>'+
       '<textarea type="text" name = "review_text" id="review_text" cols="40" rows="5"></textarea><br></br>'+
-      '<input type="hidden" name="itemId" value=' + itemId + ' />' +
+      '<input type="hidden" name="transactionId" value=' + transactionId + ' />' +
       '<input type="submit" value="Submit review">';
     clear();
     id('result').appendChild(form);

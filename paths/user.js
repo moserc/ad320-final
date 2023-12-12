@@ -120,9 +120,14 @@ var sessionHelper = require('../session');
 async function postItemReview(request, response) {   
   let sessionId = request.cookies['session'];    
   let customerId = sessionHelper.getSession(sessionId);
-  let itemId = request.body.itemId; 
+  let transactionId = request.body.transactionId; 
   let rating = request.body.rating;
   let review_text = request.body.review_text;
+  let itemId = await getItemId(transactionId);
+  if (itemId == null)
+  {
+    return response.status(400).send("Unable to process review. Please try again.");
+  }
   await createRating(customerId, itemId, rating, review_text);
   return response.redirect('/');
 }
@@ -140,5 +145,17 @@ async function createRating(customerId, itemId, rating, review_text){
           return resolve(null);
         }
     });    
+  });
+}
+
+function getItemId(transactionId) {
+  return new Promise(async (resolve, reject) => {
+    db.all("SELECT item_id FROM transactions WHERE transaction_id = ?", [transactionId], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return resolve(null);
+          }
+          return resolve(rows[0].item_id);
+    })
   });
 }
