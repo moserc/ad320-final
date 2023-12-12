@@ -19,7 +19,7 @@ function getTransactionByCustomerAPI(request, response) {
     let sessionId = request.cookies['session'];    
     let customerId = sessionHelper.getSession(sessionId);
     
-    db.all("SELECT transactions.transaction_id, transactions.customer_id, items.name as name, transactions.checkout, transactions.checkin " + 
+    db.all("SELECT transactions.transaction_id, transactions.customer_id, items.category || ': ' || items.name as name, transactions.checkout, transactions.checkin " + 
         "FROM transactions LEFT JOIN items ON transactions.item_id = items.item_id WHERE transactions.customer_id = ? " +
         "ORDER BY transactions.checkin DESC", [customerId], (err, rows) => {
         if (err) {
