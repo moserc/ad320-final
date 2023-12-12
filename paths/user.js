@@ -17,17 +17,6 @@ var sessionHelper = require('../session');
       app.post('/api/user/review', postItemReview);
   }
 
-  /**
-   * @api {post} /api/user/login/ Login
-   * @apiName postLoginAPI
-   * @apiGroup User
-   *
-   * @apiBody {String} email Users email.
-   * @apiBody {String} password Users password.
-   *
-   * @apiSuccess {Redirect} Redirects to home page.
-   * @apiSuccess {Cookie} session Sets the session cookie with the session guid.
-   */
   async function postLoginAPI(request, response) {    
     let email = request.body.email;
     let password = request.body.password;
