@@ -1,6 +1,6 @@
 /* 
     Team Teal: Andrew Cook, Cheryl Moser, Petar Spasic
-    Date: 12/10/2023
+    Date: 12/11/2023
     AD320 Final Project
 */
 "use strict";
@@ -31,15 +31,15 @@
   /**
    * Fetches all rental items from the API.
    */
-    function getAll(){
-      console.log('fetching all items...');
-      fetch(URL+"item")
-        .then(statusCheck)
-        .then(res => res.json())
-        .then(processAllItems)
-        .catch(err);
-      console.log('done');
-    }
+  function getAll(){
+    console.log('fetching all items...');
+    fetch(URL+"item")
+      .then(statusCheck)
+      .then(res => res.json())
+      .then(processAllItems)
+      .catch(err);
+    console.log('done');
+  }
 
   /**
    * Fetches a json list of all available categories from the API.
@@ -73,10 +73,26 @@
    */
   function getTransactions(){
     console.log("fetching user's transactions...");
-    fetch("http://localhost:8081/api/transaction/user")
+    fetch(URL+"transaction/user")
       .then(statusCheck)
       .then(res => res.json())
       .then(showTransactions)
+      .catch(err);
+    console.log('done');
+  }
+
+  /**
+   * Takes the user's search term as a parameter.
+   * Searches items for matching terms and returns
+   * them to the viewport if a match is found.
+   * @param {*} term the user's search term
+   */
+  function getSearchItems(term){
+    console.log("processing query...");
+    fetch(URL+"item/search/"+term)
+      .then(statusCheck)
+      .then(res => res.json())
+      .then(processAllItems)
       .catch(err);
     console.log('done');
   }
@@ -105,6 +121,7 @@
       })
       .catch(err);
   }
+
   /** ------------------------------ Toggle Function  ------------------------------ */
   /**
    * Switches between a grid layout and a list layout when 
@@ -128,11 +145,9 @@
    */
   function searchBar(term){
     console.log('filtering ' + term);
-    const filter = '';//in-progress
-    if(filter !== ''){
-      id('result').appendChild(filter);
+    if(term !== ''){
+      getSearchItems(term);
     }else{
-      console.log('search term not found, showing all items');
       getAll();
     }
   }
@@ -169,7 +184,7 @@
       link.appendChild(image);
       container.appendChild(link);
       container.appendChild(caption);
-      id("result").appendChild(container);
+      id('result').appendChild(container);
 
       link.addEventListener('click', function() { //set up detailed view
         getDetail(item);
@@ -185,7 +200,6 @@
   function getDetail(item){
     console.log('Fetching item detail...');
     clear();
-    let result = id('result');
 
     /*
     Attaches an image, item details, and either a button for logging in, 
@@ -199,8 +213,6 @@
     let link = gen('a');
     link.href = 'login.html';
     link.innerHTML = 'Log in to reserve';
-
-    let form = reserveItem(item.item_id);
     
     let details = gen('p');
     details.innerHTML = 
@@ -211,14 +223,17 @@
       'Average rating: '+item.rating_review+
       '<br><br>';
 
-    result.appendChild(image);
-    result.appendChild(details);
+    id('result').appendChild(image);
+    id('result').appendChild(details);
 
     if (isLoggedIn()){
+      let form = reserveItem(item.item_id);
       details.appendChild(form);
       form.addEventListener('submit', function(event){ //function for the reservation form
-        let dateIn = id('in').value;
-        let dateOut = id('out').value;
+        event.preventDefault();
+
+        let dateIn = id('checkin').value;
+        let dateOut = id('checkout').value;
         
         const confirmation = confirm('Please confirm reservation for:\n\n' //confirms submit
           +'Item: '+item.brand_name
@@ -232,6 +247,7 @@
           event.preventDefault();
         }else{
           form.submit();
+          alert('Your item is reserved!\nYour confirmation number is: '+item.transaction_id);
         }
       });
     }else{
@@ -249,17 +265,13 @@
     form.id = 'reservation_form';
     form.action = "/api/transaction/reserve";
     form.method = "post";
-
-    let body = gen('div');
-    body.innerHTML = 
+    form.innerHTML = 
       '<label for="checkout">Desired check out: </label>'+
-      '<input type="date" name="checkout" id="out" min=" required /><br><br>'+
+      '<input type="date" name="checkout" id="checkout" required /><br><br>'+
       '<label for="checkin">Desired check in: </label>'+
-      '<input type="date" name="checkin" id="in" required /><br><br>'+
+      '<input type="date" name="checkin" id="checkin" required /><br><br>'+
       '<input type="hidden" name="itemId" value=' + itemId + ' />' +
       '<input type="submit" value="submit">'
-
-    form.appendChild(body);
     return form;
   } 
 
@@ -269,6 +281,7 @@
    *  past transactions by user.
    */
   function showTransactions(data){
+    console.log('Data received: ', data);
     console.log('Listing transactions...');
     clear();
     /*
@@ -277,26 +290,56 @@
     option to leave a review.
     */
     let unorderedList = gen('ul');
-    if (data!=''){
-      
+
+    if (data!==''){
+
       data.forEach(rental => {
+        let transactionId = rental.transaction_id;
+        //let itemId = rental.item_id;
         let listItem = gen('li');
         let feedback = gen('a');
-        feedback.href = 'review.html';
-        feedback.innerHTML = 'Leave a review';
-        listItem.textContent = 
-          rental.name+
-          '\n'+rental.transaction_id+
-          '\n'+rental.checkout+
-          '\n'+rental.checkin+'\n'
+        feedback.href = '#';
+        feedback.innerHTML = 'Leave a review<br><br>';
+        listItem.innerHTML = 
+          'item: '+rental.name+'<br>'+
+          'check out date: '+rental.checkout+'<br>'+
+          'check in date: '+rental.checkin+'<br>'+
+          'confirmation #: '+rental.transaction_id+'<br>'
+
         listItem.appendChild(feedback);
         unorderedList.appendChild(listItem);
-        })
-        id("result").appendChild(unorderedList);
+        feedback.addEventListener('click', function(){
+          userReview(rental.item_id);
+        });
+      });
+        
+        id('result').appendChild(unorderedList);
     }else{
-      id("result").innerHTML = 'No transactions yet'
+      id('result').innerHTML = 'No transactions yet'
     }
   }
+
+  /**
+   * A user review form associated with an item from the user's
+   * past transactions.
+   * @param {*} itemId ID associated with the item that is being reviewed.
+   */
+  function userReview(itemId){
+    let form = gen('form');
+    form.id = 'review';
+    form.action = "/api/user/review";
+    form.method = "post";
+    form.innerHTML = 
+      '<label for="rating">Please rate your experience on a scale of 1-5: </label>'+
+      '<input type="number" name="rating" id="rating" min="1" max="5" step="1"><br><br>'+
+      '<label for="review_text">Leave a review (optional):  </label><br>'+
+      '<textarea type="text" name = "review_text" id="review_text" cols="40" rows="5"></textarea><br></br>'+
+      '<input type="hidden" name="itemId" value=' + itemId + ' />' +
+      '<input type="submit" value="Submit review">';
+    clear();
+    id('result').appendChild(form);
+  } 
+
   /** ------------------------------ Category Functions  ------------------------------ */
   /**
    * Used in conjunction with getCategories and getCatItems to 
@@ -403,7 +446,7 @@
    * Clears/resets the contents of the 'results' container.
    */
   function clear(){
-    id("result").innerHTML = "";
+    id('result').innerHTML = "";
   }
 
   /**
