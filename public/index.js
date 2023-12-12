@@ -246,8 +246,25 @@
         if (!confirmation) {
           event.preventDefault();
         }else{
-          form.submit();
-          alert('Your item is reserved!\nYour confirmation number is: '+item.transaction_id);
+          fetch(URL + "transaction/reserve", {
+            method: "POST",
+            body: JSON.stringify({
+              itemId: item.item_id,
+              checkout: dateOut,
+              checkin: dateIn
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+          .then(statusCheck)
+          .then(res => res.json())
+          .then(data => {
+            alert('Your item is reserved!\nYour confirmation number is: '+data.transaction_id);
+            form.submit(); 
+          })
+          .catch(err);
+                   
         }
       });
     }else{
@@ -263,8 +280,8 @@
   function reserveItem(itemId){ //HTML for the form generated in getDetail
     let form = gen('form');
     form.id = 'reservation_form';
-    form.action = "/api/transaction/reserve";
-    form.method = "post";
+    // form.action = "/api/transaction/reserve";
+    // form.method = "post";
     form.innerHTML = 
       '<label for="checkout">Desired check out: </label>'+
       '<input type="date" name="checkout" id="checkout" required /><br><br>'+
